@@ -14,24 +14,20 @@
 \begin{document}
     \twocolumn[
     \begin{@twocolumnfalse}
-	\title{Multiplexed Spectral Imaging with a High-Flux 330-$\mu$m Pitch Cadmium Zinc Telluride (CZT) Detector}
-	\author{Chelsea A. S. Dunning, Spencer M. Robinson, Jericho O'Connell, Kevin J. Murphy, Kris Iniewski, and Magdalena Bazalova-Carter }
+	\title{Spectral Image Clustering Segmentation}
+	\author{Jericho O'Connell, Kevin Murphy, Kris Iniewski, and Magdalena Bazalova-Carter }
 	\maketitle
 
 \section{Abstract}
-Spectral computed tomography (sCT) imaging with a high-flux cadmium zinc telluride (CZT) detector of a phantom with three contrast materials is presented. The table-top sCT imaging system consisted of a diagnostic x-ray tube, rotation stage for phantom placement, a translation stage to enable detector motion and a 330-$\mu$m pitch CZT detector of 8$\times$12 mm in size capable of using six energy bins. The 3D-printed 3-cm diameter phantom contained six 5-mm diameter vials with 1\% and 5\% solutions of iodine, gadolinium and gold. The phantom was imaged with 120$\,$kVp 1$\,$mA beam with a 1-mm aluminum filter using 180 rotation steps in 2$^\circ$ intervals. Each detector data acquisition took 1$\,$s and the entire spectral CT scan resulted in a mean imaging dose of 172 mGy. 
 
     \newline
     \end{@twocolumnfalse}]
 \section{Introduction}
-\PARstart{T}{he} use of energy-selective x-ray computed tomography (CT) for material analysis was proposed in the 1970s\cite{alvarez1976energy}. Energy-selective CT imaging has been recently applied in the form of dual-energy CT (DECT) imaging, in which the effective atomic number of each material can be reconstructed and used for a more accurate material analysis compared to conventional x-ray CT. Many studies have employed DECT for this purpose\cite{silva2011dualab,yu2012dual,johnson2007matdiffDECT}. DECT is performed by scanning with two different x-ray beam energies to create two separate images which are then subtracted to enhance the material of interest. This presents a number of challenges in terms of imaging time, subject motion, and imaging dose. In addition, DECT is often limited to distinguishing materials with very different attenuation curves, such as bone and soft-tissue\cite{fornaro2011review}. Thanks to the recent advancements in photon-counting detector development, multi-energy x-ray imaging, or spectral CT, has become possible using only one x-ray beam energy. Spectral CT imaging is capable of distinguishing multiple high-atomic number (\textit{Z}) materials by selecting appropriate energy bins above and below the K-edges of each material on a photon-counting detector capable of energy discrimination. In DECT imaging, a similar effect is achieved by selecting appropriate x-ray beam energies on either side of a K-edge for one material. It is anticipated that spectral CT will lead to important enhancements in contrast visualization, lower imaging dose, and reduced image artifacts. However, detector optimization as well as image reconstruction techniques cause spectral CT to lag behind conventional photon-integrating x-ray imaging. The purpose of this study was to start bridging that gap. 
 
-In this study, the goal is to simultaneously image three clinically-relevant high-\textit{Z} contrast agents, namely iodine, gadolinium, and gold, using spectral CT. Iodine is a routinely-used contrast agent for many clinical CT scans. Gadolinium, while typically used as a contrast agent in magnetic resonance imaging (MRI) scans, also has been used in CT imaging \cite{taguchi2015imaging, bennett2014hybrid, si2018multicolour, feuerlein2008multienergy}. Finally, with the use of biocompatible gold nanoparticles for possible dose enhancement\cite{hainfeld} and drug delivery\cite{ghosh2008gold} in cancer treatment, gold is an attractive contrast agent for CT imaging. Spectral CT imaging has been used to simultaneously image both gadolinium and iodine contrast agents using a Medipix silicon spectral detector\cite{bennett2014hybrid} and a CdTe detector array\cite{schlomka2008experimental}. However, due to the absorption efficiency of silicon at higher x-ray energies compared to CZT, the Medipix detector may struggle to image higher-\textit{Z} materials such as gold. In addition, CdTe detectors suffer from low count rates compared to CZT detectors, which is not ideal for medical CT scans. Recently iodine, gadolinium, and gold have been imaged before in a single multi-energy spectral CT study using six energy bins on a semi-conducting detector, although at most only two contrast agents were imaged simultaneously with a pencil beam geometry\cite{si2018multicolour}. This study demonstrates faster simultaneous spectral CT and conventional cone beam CT of iodine, gadolinium, and gold inside a small animal phantom using a high-flux, photon-counting CZT detector for the first time.
 
-****ROUGH NOTES****
-- find iodine image without gold -> when I showed the image that didn't have gold, in the "raw" units it was a dark "hole" rather than bright. Upon normalizing to HU post-subtraction I get a similar image as Jericho. Gold has an extremely high density, nearly quadruple that of iodine. I wonder if that effect is showing up in the HU normalized image?
-- I think the introduction first draft is finished. What does everyone think? Should I add more information about how CZT photon-counting detectors work? -Chelsea
+\PARstart{S}pectral imaging remains an unexplored imaging modality for multiple reasons. Firstly the price of spectral detectors is a large barrier to the clinical implementation. Secondly the applications where spectral imaging outdoes single energy and dual energy imaging are not well defined. Although there has been much interest in spectral CT in medicine it is often seen to have only small benefits as compared with dual energy CT in the same application. 
 
+In this work we examine spectral imaging as compared to dual and single imaging in the application of segmentation. A comparison is made of the performance of unsupervised segmentation algorithms is performed on experimental images acquired using a Redlen (redlen industries ...) spectral detector on a phantom composed of a variety of materials as well as images aquired of these same materials embedded in chicken breast.
 
 \section{Materials and Methods}
 
@@ -48,106 +44,108 @@ In this study, the goal is to simultaneously image three clinically-relevant hig
 \end{center}
 
 
-\subsection{Data acquisition}
-Data acquisition was completed using a CZT detector of 8$\times$12 mm in size from Redlen Technologies. The CZT detector module uses 2 mm thick, 330$\mu$m pitch high-flux CZT sensor capable of operating at 250 Mcps/mm$^2$ rates without any signs of polarization. The CZT crystal is grown using the Traveler Heat Method (THM) by Redlen Technologies. The sensor is connected to the high-speed photon counting ASIC that operates at rates up to 62.5 Mcps per channel. The ASIC communicates through high-speed LVDS I/Os to the external PC via programmable FPGA. The energy of photons incident onto the detector are sorted into six energy bins by the ASIC. In the case of this experiment the energy bins were set to 16-33 keV, 33-41 keV, 41-50 keV, 50-64 keV, 64-81 keV, \& 81-120 keV. These values were used to accommodate for the K-edge values of the three contrast agents used, which are shown in Figure \ref{attencoeffs}.
-\newline
-\indent The CZT detector was mounted on a horizontal and a vertical linear motion stage from Newport Corporation. The X-ray source was a module XRS-160 from Comet Technologies. This X-ray source was mounted on two linear motion stages as well, one horizontal and perpendicular to the detectors motion stage and a vertical motion stage. Between the CZT detector and X-ray source was a rotation stage mounted on a horizontal motion stage parallel to the CZT detector. The phantom containing 1\% and 5 \% solutions of I, Gd, and Au as contrast agents was placed on this rotation stage and scanned 180 times over a 360$^\circ$ rotation to create a sinogram, 5 rotations were performed in order to image the entire phantom body. The I solution used was iodine-based Omnipaque 300 (iohexol, GE Health- care, Princeton, NJ), the Au solution used was Gold (III) Chloride solution from Nanopartz Inc (GG3CS-25.4-100 Lot AUY03-7077), and the Gd used was synthesized in the form of nanoparticles dispersed in hexanes\cite{gadolNPs}. All of these solutions were contained in 0.2 ml Fisherbrand Flat Cap PCR tubes, and diluted in 0.6 ml Axygen Microtubes.
+\subsection{Data Aquistion}
+X-ray scans were performed on a PMMA phantom with 5 contaminates (steel, glass, plastic, polypropylene, and PFTE) as well as chicken flesh with various contaminates (bone, cartilage, fat, plastic, wood, glass, rock, steel, and aluminum).
 
-\begin{figure}[htbp]
-\includegraphics[width=\linewidth]{Figures/sCT_attencoeffs.png}
-\caption{Mass attenuation coefficients of water, iodine, gadolinium, and gold shown with the thresholds of the energy bins on the CZT detector.}
-\label{attencoeffs}
-\end{figure}
+Data was acquired using a CZT detector with a 8$\times$12 mm imaging array from Redlen Technologies. The 330 $\mu$m pitch high-flux CZT detector is 2mm thick and is able to operate at 250 $\frac{Mcps}{mm^2}$ without any signs of polarization. Travel Heat Method (THM) was adopted by Redlen Technologies when growing the CZT crystals used in the detector. These crystals were placed in a sensor that is connected to a photon counting ASIC which operates at rates of up to 62.5 $\frac{Mcps}{channel}$. This ASIC communicates with an external PC though LVDS I/Os via a programmable FPGA. The energies of photons incident with the detector are sorted into six energy bins by the ASIC. In the case of this experiment the energy bins were set to 16-33 keV, 33-41 keV, 41-50 keV, 50-90 keV, 90-120 keV, \& 120< keV.
 
-The 0.2 ml PCR tubes were inserted into a 3D printed phantom made of solid polylactic acid (PLA) of density ???, the contrast agents were alternating as imaged in figure 1.b). The phantom was printed to reduce the air gap with the PCR tubes when inserted. The use of the Newport linear motion stages allowed for sub-micron accuracy in motion of the detector and X-ray source. This allowed for precise stitching of sinograms produced from the 5 360$^\circ$ rotations. For all scans of the phantom the X-ray source was running at 120 kVp, and 1 mA with a 1.0mm focal spot, and 1mm of Al filtration, while the detector was acquiring 1-s images with 4 equivalently spaced frames. Acquisition time for one full rotation of the phantom took 32 minutes, 5 rotations were done to image to whole phantom. 
+The detector and X-ray source were both mounted on vertical and horizontal linear motion stages from Newport Corporations. These stages were oriented perpendicular to each other to allow for easy navigation while imaging the phantom, which was mounted between these two stages. The X-ray source used was a module XRS-160 from Comet Technologies. 
 
-\subsection{Dose Estimation}
-To estimate the dose of the scan, the x-ray tube and a cylindrical phantom was simulated in TOPAS\cite{topas}, a GEANT-4 based Monte Carlo software package, in the same setup as shown in Figure \ref{imagingsetup}. The relevant physics modules were included, such as "g4em-standard\_opt4", "g4decay", "g4ion-binarycascade", "g4stopping", and "g4em-extra". In addition, the simulation of fluorescence, Auger electrons, and particle-induced x-ray emission were included. For simplicity, the phantom was assumed to be pure PLA and was only simulated for one rotation. The resulting dose per primary electron in the phantom volume from the simulation was $3.05 \times 10^{-19}$ Gy/primary. After multiplying by 180 rotation steps, the imaging time of 1 second per rotation, and the beam current of 5 mA, then dividing by the electric charge of an electron, the mean estimated dose to the phantom was calculated to be 172 mGy.
+The PMMA phantom block as imaged in figure (1.C) was placed on the stage and the 3 smallest contaminates of each material were imaged. To image these contaminates each at different heights, the CZT detector and X-ray source were moved vertically in a uniform manner allowing for each material to be centered without any motion of the phantom block itself. Following the first round of data acquisitions a second block of 18mm PMMA was placed in front of the phantom block and images were acquired to determine the depth at which each contaminate could be visualized. 
 
-\subsection{Image Reconstruction}
+In the case of the chicken flesh, each contaminate was able to fit in a phantom holder alongside the chicken. This block was placed on the stage and was able to be imaged in one scan per contaminate. 
 
-\subsubsection{Spectral Image Reconstruction}
+Air scans were completed for each data acquisition and could then be processed using MATLAB (The Mathworks, Natick, MA) for image reconstruction and CNR calculations for each contaminate. During all scans the X-ray tube was using a cone beam operating at 1mA, 120 kV, with a 1mm focal spot. 
 
-Due to the limited size of the detector, image acquisition included multiple $360^o$ rotations of the phantom with the detector translated to capture the whole phantom. The detector was moved five times with positioned defined relative to the X-Ray tube of -30, -21, -12, -3 and 6 mm respectively. Thus, to generate one reconstruction there were five sets of 180 projections that were combined as sinograms to make a single reconstruction.
-MATLAB (The Mathworks, Natick, MA) was used for data processing and image reconstruction, while Python was used for data analysis. For each offset relative to the X-Ray tube an air-image was taken, the counts were converted into projections as $p = -ln(I/I_0)$ where $I$ is the number of counts and $I_0$ is the number of counts in the air-image. The five different sets of sinograms were cropped and stitched together to cover the whole phantom. 
-Images underwent ring-artifact corrections using the wavelet method\cite{munch2009stripe}. This method was used to remove both vertical and horizontal stripes from the image to account for the non-uniformity of the pixel response. CT images were then reconstructed using filtered back-projection with a Hamming filter. 
+% \begin{figure}[htbp]
 
-\subsubsection{K-Edge Images}
+% \includegraphics[width=\textwidth]{FullFigure.jpg}
 
-The K-edge imaging was performed by subtracting the energy bin directly above the k-edge from the bin directly below the K-edge in one axial CT slice of the phantom. The subtraction of the two energy bins was done after the reconstruction process. This method produced three K-edge images, one for each of Iodine, Gadolinium, and Gold. The K-edge energies for these three elements were considered to be 33.2 keV, 50.2 keV, and 80.7 keV  respectively. Contrast to noise ratio (CNR) was evaluated for a region of interest (ROI) by calculating the ratio of contrast (the difference between mean values of the ROI and the phantom body) and the standard deviation of the signal in the phantom body which can be seen in Fig. \ref{colour_plots}. To better visualize the K-edge images, all pixels were scaled by the mean value of the ROI for the 5\% concentration to make intensity proportional concentration of contrast agent.
+% \caption{A) Shows an image of the lab after data was acquired with different components as labeled. B) Is a schematic of the lab with distances from source to detector labeled. C) The layout for the phantom used with sizes of contaminates as labeled.}
+% \label{figcali}
+% \end{figure}
 
+\subsection{Dimensional Reduction Methods}
 
-\begin{figure}[htbp]
+As described by (???) segmentation follows multiple steps includding preprocessing, dimensional reduction, clustering and postprocessing. Dimensional reduction methods were used in this work to both help visualization and to increase class seperation in an effort to make the clustering more successful.
 
-\includegraphics[width=\linewidth]{Figures/individual_kedge.png}
-
-\caption{Each image is one axial slice of the CT reconstruction: a) The first K-edge image isolating iodine, b) the second K-edge image isolating Gadolinium and finally c) the third K-edge image isolating Gold. Subplot d) is the summed reconstruction over all of the energy bins, the circles in the image represent the ROIs taken from the image to generate the CNR, the red circle is the ROI used to define the contrast to noise ratio.}
-\label{colour_plots}
-
-\end{figure}
+\subsection{Clustering Methods}
 
 
-\section{Results}
 
-\subsection{CT Images}
+\subsubsection{Number of Clusters}
 
-Fig. \ref{colour_plots} shows the results of the K-edge subtraction technique. The top image is the reconstruction of all energy bins as reference for the image quality that can be expected from the detector. The 5\% Iodine has very high contrast in this image as well as the 5\% gold which easily stands out from the body of the phantom. However the other inserts are hard to differentiate from the phantom body. 
+Many of the algorithms that are shown below include a parameter that specifies the number of clusters that will be created by the algorithm. This is a problem as the ideal clustering method would have the option of assigning all of the points in an image to the same class, which should be the default case in non-desctructive testing. However, there are methods that accomplish this that are specific to each clustering method discussed. So as a first step we will examine all of the clustering algorithms based on their performance on the given two class clustering problem of the phantom and then select the best model and discuss how it asses what number of clusters it should use as input to the algorithm.
 
-Throughout the image reconstruction process ring artifacts were seen in the K-edge images as can be seen in the middle two K-edge reconstructions of Iodine and Gadolinium.
+\subsubsection{Performance Metric}
 
-The Iodine K-edge image created by subtracting the 33-41 keV from the 16-33 keV energy bin is seen in the second image, assigned a purple colormap in Fig. \ref{colour_plots}. The 5\% iodine insert stands out clearly from the rest of the image, however the 1\% iodine is not clearly differentiated from the PLA background nor from the Gold insert. The Gadolinium K-edge reconstruction in Fig. \ref{colour_plots} is assigned a green colormap. In this case both the 5\% and the 1\% Gadolinium inserts had good contrast relative to the phantom body. This is similar to the Gold K-edge reconstruction where the two gold inserts stand out relative to the phantom body. However, the CNR results show that the contrast of the 1\% inserts are not all above the Rose criterion \cite{rose}.
+The performance metric used to evaluate the clustering method was the V-score as defined by (???). The V-score was used due to its intuitive nature. A V-score is the harmonic mean of the homogeneity and completeness score of the clustering as compared to a ground truth. The ground truth used were manual segmentations of the image. A clustering is said to be complete ($c$) if all the data points of a given class are in the same cluster. Conversely, a clustering is said to be homogeneous ($h$) if all clusters contain data points of only one class. These metrics are defined in terms of conditional entropy as
 
-\begin{figure}[h!]
-\centering
-\adjincludegraphics[width=\linewidth,trim={1cm 3cm 1cm 3cm},clip]{Figures/Composite_Image.pdf}
+$h = 1 - \frac{H(C|K)}{H(C)}$
 
-\caption{a) Shows the CT image for reference. b) Shows reconstructed RGB using the reconstruction of all of the energy bins with an RGB created by assigning an gold colormap to Gold, green to Gadolinium and purple to Iodine. All of the K-edge images are scaled between 0 and 5\% concentration of contrast agents. c) is the composite of the two images.}
-\label{rgb_image}
+$c = 1 - \frac{H(K|C)}{H(K)}$
 
-\end{figure}
+Where $C$ is the classes and $K$ is the cluster assignment, and $H(C|K)$ is the conditional entropy of the classes given the clusters assigned and is defined as
 
-An optimal way of visualizing the results of multiplex imaging is to assign the different K-edge images to the three channels of an RGB image. In Figure \ref{rgb_image} this method can be seen overlayed on the summed energy bins to display all the contrast agents in one image. A confounding factor is the background noise in the phantom body which is seen to be prevalent in the overlayed image (right).
+$ H(C|K) = - \sum_{c=1}^{|C|} \sum_{k=1}^{|K|} \frac{n_{c,k}}{n}
+          \cdot \log\left(\frac{n_{c,k}}{n_k}\right)$
 
-\subsection{Contrast-to-Noise Ratio}
+and $H(C)$ is the **entropy of the classes** and is given by:
 
-CNR of K-edge images and individual energy bins are presented in Fig. \ref{contrast_all} (second and third columns). As expected, CT reconstructions of the inserts with high attenuation resulted in high CNR. The Iodine insert having the highest CNR as is evident in Fig. \ref{rgb_image}.
+$H(C) = - \sum_{c=1}^{|C|} \frac{n_c}{n} \cdot \log\left(\frac{n_c}{n}\right)$
 
-In general, CNR in the K-edge images (first column) was higher than the Rose criterion (red line), 11.5, 14.5, and 6.9 respectively for the Gold, Gadolinium and Iodine respectively. However for the 1\% cases CNR were 2.0, 11.3 and 3.0 respectively for the Gold, Gadolinium and Iodine. The Gadolinium, with a CNR above 4 is thus the only detectable contrast agent at 1\%.
+\subsubsection{K-means}
 
-\begin{figure}[!h]
+The first clustering method implemented was k-means clustering. K-means was implemented using the k-means++ algorithm of (???). K-means was fit using a value for the number of clusters $k$ defined through the use of silhouette analysis. Different distance metrics were used, however none of the distance metrics tried improved performance over the squared euclidean distance, thus squared euclidean distance was used as the metric.
 
-\includegraphics[width=\linewidth]{Figures/contrast_all.png}
+\subsubsection{Mean Shift}
 
-\caption{The CNR results for the K-edge images as well as the bins used to construct the images for comparison. The red line denotes the limit of human vision at a CNR value of 4.}
-\label{contrast_all}
+A mean shift clustering was also applied to the data. The mean shift algorithm as described by (???) does not take as input the number of clusters to be found in the data. The bandwidth was estimated using the scikit learn method for estimating bandwidth which uses a it is determined using a heuristic based on the median of all pairwise distances. A radial basis function (RBF) kernel was used in the clustering.
 
-\end{figure}
+\subsubsection{Spectral Clustering}
 
-The scaling relation between the concentrations of contrast agents in the phantom was largely consistent with the signal intensities in the ROIs as seen in Fig. \ref{concentrations}. For Iodine, a) in Fig. \ref{concentrations}, the average concentration over all slices in the 1\% and 0\% ROIs showed slightly higher signals than expected at 1.15\% and 0.09\% respectively. The Gadolinium ROIs were both within one standard deviation of the theoretical values at 2.06\% and 0.02\% respectively for the 2\% and 0\% ROI. The 2\% Gadolinium ROI had a larger standard deviation than all other ROIs and its concentration showed dependence on phantom depth, with lower values at the bottom of the phantom, as can be seen in Fig \ref{concentrations} b). The 1\% Gold ROI in Fig. \ref{concentrations} c), was within one standard deviation with a value of 1.01\%, however the 0\% region was not with a value of -0.13\%.
+Spectral clustering first described by (???) is a method that takes the spectrum of the similarity matrix, a matrix constructed which holds the pairwise similarity of points in the dataset using a defined distance metric. In this work the multiple distance metrics were used to construct the similarity matrix. As with k-means the spectral clustering algorithm takes as input the number of clusters. This is problematic as the ideal clustering method would have the option of assigning all data points to one class.
 
-\begin{figure}[!h]
+\subsubsection{Ward Linkage Hierarchical Clustering}
 
-\includegraphics[width=\linewidth]{Figures/concentrations.png}
+Although multiple heirarchical clusterings were tried using different linkages, ward clustering was decided as the the superior clustering method as it is the most robust with noisy data. First described by (???) heirarchical clustering builds nested clusters by starting with every point as a single cluster and iteratively merges or splits clusters based on some distance metric. For Ward clustering the clustering minimizes the sum of squared distance as until convergence. This is the same metric as k-means clustering save with agglommerative approach rather than a centroid approach. Two other parameters included in the algorithm are the linkage and conectivity. The connectivity governs the 
 
-\caption{The contrast agent concentrations over all slices are shown. The average concentration of the ROIs is plotted as a coloured x with error-bars representing one standard deviation, the grey lines around the x denoting the individual slices. Each grey line is assigned a horizontal offset according to its location in the phantom; the farther left the line the lower the slice is in the phantom. Thumbnails show a sample ROI in red. Finally, a colored line of best fit is plotted as well as the theoretical line of best fit shown in black.  }
-\label{concentrations}
+\subsubsection{Birch}
 
-\end{figure}
+Another form of heirarhcical clustering, the Birch clustering algorithm, a stable and fast algorithm, has the ability to cluster large datasets with only small amounts of memory as well as the ability to discard outliers. These features are not included in Ward Linkage Hierarchical Clustering. Birch requires the desired number of clusters as an input.
 
-\section{Discussion}
-We have showcased conventional and K-edge CT imaging of three high-\textit{Z} contrast agents simultaneously in a 3D-printed small animal phantom using a CZT photon-counting detector. However, there were a few factors that affected the results. 
 
-The energy bin thresholds on the CZT detector were chosen to ensure roughly the same relative number of incident x-rays from the 120 kVp source were in each bin, while constrained by the K-edges of each element. However, this estimation did not account for beam attenuation by the phantom itself, which means the relative number of x-rays in the lower energy bins may have been overestimated. Referring to Figure \ref{attencoeffs}, the 33 keV, 50 keV, and 81 keV thresholds were exact to the K-edges of iodine, gadolinum, and gold respectively. The energy resolution of the thresholds themselves were 3 keV, which could cause some of the x-ray counts near the threshold to be assigned to the wrong energy bin. This effect should be comparable to the effect of detector pileup, where coincident x-ray counts would be assigned to a higher energy bin. Regardless, further optimization of these energy bin thresholds would improve the results. In addition, optimizing the energy bin thresholds would require \textit{a priori} knowledge of the contrast agent material in the object and assume that the contrast agent materials of interest do not have K-edges similar in energy.
+\section{Results and Discussion}
 
-The active area of the CZT detector was only 12 mm, which posed a challenge when imaging a small animal-sized object using a cone beam geometry. The translation of the detector with every set of rotations was the solution, however this would prolong the imaging time. Since five translations were used, a larger active area of the CZT detector that fully covers the data set would reduce the total acquisition time by a factor of 5. This approach also eliminates the need to manually stitch the projection sinograms together, which may have contributed to the ring artifacts in the final images.
+\subsubsection{Dimensional Reduction Results}
 
-***ROUGH NOTES***
--compare with multiplexed K-edge CT vs. XFCT\cite{kedge}. XFCT limited to small animals, whereas sCT isn't necessarily. (should probably also introduce this paper in the introduction so that it ties back into the discussion.)
--compare results to other DECT and sCT studies.
-\section{Conclusions}
+The three different methods for dimensional reduction are compared in figure (???), the dimensional reduction methods were compared in terms of the v-measure of the resultant clustering. All of the clusterings were performed on two dimensional data after the dimensional reduction step. The performance of the algorithms without the dimensional reduction step was also performed for comparison to justify the use of dimensional reduction.
 
-\section{Acknowledgement}
-The authors would like to thank the Redlen Technologies team for their support and advice on data acquisition, Dylan Y. Breitkreutz for simulating the x-ray tube spectrum, and Adriaan Frencken for providing the gadolinium contrast agent.
+The PCA dimensional reduction has superior performance when using the GMMs and good performance on all other algorithms. This was taken as a result of the linear transformation performed under the PCA which preserved the gaussian structure resultant from the photon statistics of the imaging process. Non-linear methods such as tSNE, which can be seen in figure (??) , resulted in good separation of the data especially when the position data was added as a feature as seen in the figure. One can see how the background of the image when coupled with its position data is embedded as a rectangular cluster in the tSNE scatter plots, however tSNE being non-linear created a large separation between the partial volume pixels and contaminant pixels. This results in lower V-scores ever when coupled with an algorithm that clusters the data perfectly such as HDBSCAN.
+
+NMF dimensional analysis was also performed on the data. Although on average the results had lower V-measures than the PCA or no dimensional reduction, there were some cases that defied this trend. As can be seen in figure (???) the hard materials when decomposed with NMF and the GMM algorithm resulted in the best fit even when compared to the dual and single energy cases which will be seen in the next section.
+
+
+\subsection{Clustering Results}
+
+
+The results of the clustering can be seen in the scatter plot. One can see that the data is clustered in an overlapping roughly Gaussian blob for the soft tissues. For the hard tissues one can see that the data is spaced out over a few blobs, one large blob that contains the background pmma and multiple sparser foreground blobs that indicate the different inserts.
+
+The attempts to classify the data were largly successful with almost all algorithms classifying the largest inserts correctly and worse results on the smaller inserts and added varying amounts of error on the partial volume pixels. One can see that the methods which used euclidean distance (kmeans, mean-shift, ward, Birch) has limited success when dividing the clusters. The largest v-score generated from these methods being (???). The hdbscan algorithm has some success binning the algorithms, with a winning combination for dbscan being the use of tsne as a dimensional reduction method before clustering using DBSCAN as this clearly seperates the data in visible clusters as mentioned in the previous section. However these clusters are not necessarily homogenous nor complete, as can be seen by the v-score assigned to these clustering methods.
+
+Spectral clustering produced higher v-measure than the euclidean distance based metrics as well as dbscan and Birch on the soft materials. On the hard materials spectral clustering produced similar results. In fig (???) one can see that a good algorithm is characterized by being able to form a globular cluster around the background pmma and hold the outliers from this cluster as the members of the second class.
+
+This is best described by the most successful algorithms the Gaussian Mixture Models which had the highest V-scores overall for all materials. Successfully forming a background cluster and assigning the outlying points to the second cluster the GMMs were best able to optimize based off of the gaussian shape of the data.
+
+\subsubsection{Single and Dual Energy Comparison}
+
+In fig (???) the performance of the clustering is compared between the single energy case, which sums the counts in all of the bins to make one image and a dual energy case which creates two bins by summing the photons in bins 1-3 and 4-5 to form two images. 
+
+The single and dual energy cases show improvements in performance relative to the spectral imaging looking at the hard tissues. This is expected as the greatest variance in the image is due to the density difference of the two materials, thus the data is linearly separable in the one and two dimensional image spaces of single and dual energy imaging. In the softer materials the spectral imaging superior V-measures compared to the single energy case as would be expected since these materials cannot be linearly separated through their attenuation alone and the energy dependence of the attenuation, acquired through spectral imaging, creates a higher dimensional set of features that can be clustered more easily. More surprising perhaps is the improvement of the V-measure in the spectral case as compared to the dual energy case in which both imaging methods contain information about the energy dependence. Previously it was believed that spectral imaging has little improvement over dual energy in cases such as this ref(???).
+
+One other anomalous result is the effectiveness of NMF coupled with GMMs on the hard materials
+
+
 
 \bibliographystyle{IEEEtran}
 \bibliography{IEEEabrv,spectralCT}
